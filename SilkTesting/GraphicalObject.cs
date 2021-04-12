@@ -20,8 +20,6 @@ namespace SilkTesting
         public Shader associatedShader;
         private ObjMaterialFile mtl;
 
-        private uint totalCompiledVertices;
-
         public GraphicalObject(string objFile, string mtlFile, GL Gl, Shader s)
         {
             obj = ObjFile.FromFile(objFile);
@@ -30,7 +28,7 @@ namespace SilkTesting
             associatedShader = s;
             this.Gl = Gl;
 
-            (vertices, indices) = createVertexInfo();
+            (vertices, indices) = CreateVertexInfo();
 
             Ebo = new BufferObject<uint>(Gl, indices, BufferTargetARB.ElementArrayBuffer);
             Vbo = new BufferObject<float>(Gl, vertices, BufferTargetARB.ArrayBuffer);
@@ -51,11 +49,10 @@ namespace SilkTesting
 
         public unsafe void Draw()
         {
-            Gl.DrawElements(PrimitiveType.Triangles,(uint)indices.Length,DrawElementsType.UnsignedInt,0);
-            //Gl.DrawArrays(PrimitiveType.Triangles, 0, (uint)indices.Length);
+            Gl.DrawElements(PrimitiveType.Triangles,(uint)indices.Length,DrawElementsType.UnsignedInt,null);
         }
 
-        private (float[], uint[]) createVertexInfo()
+        private (float[], uint[]) CreateVertexInfo()
         {
             var triplets = new List<ObjTriplet>();
 
@@ -73,17 +70,15 @@ namespace SilkTesting
 
             var compiledVertices = (from triplet in finalTriplets
                 let v = obj.Vertices[triplet.Vertex - 1].Position
-                let t = obj.TextureVertices[triplet.Texture - 1]
-                let n = obj.VertexNormals[triplet.Normal - 1]
+                let t = triplet.Texture != 0 ? obj.TextureVertices[triplet.Texture - 1] : new ObjVector3()
+                let n = triplet.Normal != 0 ? obj.VertexNormals[triplet.Normal - 1] : new ObjVector3()
                 select new[] {v.X, v.Y, v.Z, n.X, n.Y, n.Z, t.X, t.Y}).ToList();
 
             var doneVertices = compiledVertices.SelectMany(v => v).ToArray();
             var finalIndices = obj.Faces.SelectMany(face =>
                 face.Vertices
                     .Select(v => (uint) finalTriplets.FindIndex(tr => tr == v))).ToArray();
-
-            totalCompiledVertices = (uint) compiledVertices.Count;
-            Console.WriteLine($"[{string.Join(',',finalIndices)}]");
+            
             return (doneVertices, finalIndices);
         }
     }

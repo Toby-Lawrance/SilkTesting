@@ -152,12 +152,12 @@ namespace SilkTesting
             TextureShader = new Shader(Gl, @"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\transformShader.vert",
                 @"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\lightingTextureShader.frag");
             
-            cube = new GraphicalObject(@"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\Cube.obj",@"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\Cube.mtl",Gl,TextureShader);
+            cube = new GraphicalObject(@"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\Monke.obj",@"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\Cube.mtl",Gl,TextureShader);
 
             //Start a camera at position 3 on the Z axis, looking at position -1 on the Z axis
             Camera = new Camera(Vector3.UnitZ * 6, Vector3.UnitZ * -1, Vector3.UnitY, Width / Height);
 
-            texture = new Texture(Gl, @"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\loss.png");
+            texture = new Texture(Gl, @"C:\Users\tobyl\RiderProjects\SilkTesting\SilkTesting\monke.png");
         }
 
         private static void OnUpdate(double deltaTime)
@@ -210,15 +210,15 @@ namespace SilkTesting
             RenderMyLitCube();
             //RenderLitCube();
             
-            //VaoCube.Bind();
+            VaoCube.Bind();
 
-            //RenderLampCube();
+            RenderLampCube();
         }
 
         private static void RenderMyLitCube()
         {
             cube.Use();
-            cube.associatedShader.SetUniform("uTexture0", 0);
+            //cube.associatedShader.SetUniform("uTexture0", 0);
             //Set up the uniforms needed for the lighting shaders to be able to draw and light the coral cube
             cube.associatedShader.SetUniform("uModel", Matrix4x4.CreateRotationY(MathHelper.DegreesToRadians(25f)));
             cube.associatedShader.SetUniform("uView", Camera.GetViewMatrix());
@@ -233,10 +233,10 @@ namespace SilkTesting
             
             //Track the difference in time so we can manipulate variables as time changes
             var difference = (float) (DateTime.UtcNow - StartTime).TotalSeconds;
-            var lightColor = Vector3.Zero;
-            lightColor.X = MathF.Sin(difference * 2.0f);
-            lightColor.Y = MathF.Sin(difference * 0.7f);
-            lightColor.Z = MathF.Sin(difference * 1.3f);
+            var lightColor = Vector3.One;
+            //lightColor.X = MathF.Sin(difference * 2.0f);
+            //lightColor.Y = MathF.Sin(difference * 0.7f);
+            //lightColor.Z = MathF.Sin(difference * 1.3f);
 
             var diffuseColor = lightColor * new Vector3(0.5f);
             var ambientColor = diffuseColor * new Vector3(0.5f);
