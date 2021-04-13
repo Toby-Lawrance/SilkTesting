@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SimpleMeshGraphics\SimpleMeshGraphics.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Cube.obj" />
+      <Content Include="Cube.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Cylinder.obj" />
+      <Content Include="Cylinder.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="Sphere.obj" />
+      <Content Include="Sphere.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+</Project>

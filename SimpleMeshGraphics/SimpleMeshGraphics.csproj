@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JeremyAnsel.Media.WavefrontObj" Version="2.0.19" />
+      <PackageReference Include="Silk.NET" Version="2.3.0" />
+      <PackageReference Include="Silk.NET.Core" Version="2.3.0" />
+      <PackageReference Include="Silk.NET.OpenGL" Version="2.3.0" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="shaders\lighting.frag">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="shaders\lightingTexture.frag">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="shaders\shader.frag">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="shaders\shader.vert">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="shaders\texture.frag">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="shaders\texture.vert">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="lighting.frag" />
+      <None Remove="lightingTextureShader.frag" />
+      <None Remove="passThroughShader.frag" />
+      <None Remove="passThroughShader.vert" />
+      <None Remove="shader.frag" />
+      <None Remove="shader.vert" />
+      <None Remove="textureShader.frag" />
+      <None Remove="textureShader.vert" />
+      <None Remove="transformShader.vert" />
+    </ItemGroup>
+
+</Project>
