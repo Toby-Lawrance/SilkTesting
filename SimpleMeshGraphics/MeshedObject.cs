@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using JeremyAnsel.Media.WavefrontObj;
 using Silk.NET.OpenGL;
 
@@ -9,52 +10,58 @@ namespace SimpleMeshGraphics
     public class MeshedObject : GraphicsObject
     {
         protected GL gl_api;
-        protected BufferObject<uint> indicesBuffer;
-        protected BufferObject<float> vertexBuffer;
-        protected VertexArrayObject<float, uint> arrayObject;
+        protected VertexArray<float, uint> arrayObject;
         protected Shader associatedShader;
+
+        protected Matrix4x4 transformationMatrix;
+
+        private uint indicesLength = 0;
         
         protected ObjFile obj;
         
-        public MeshedObject(string objFile, GL gl, Shader s)
+        public MeshedObject(string objFile, GL gl, Shader s, Camera cam)
         {
             obj = ObjFile.FromFile(objFile);
             gl_api = gl;
             associatedShader = s;
+            CameraRelevant = cam;
 
             var (vertices, indices) = CreateVertexInfo();
 
-            indicesBuffer = new BufferObject<uint>(gl_api, indices, BufferTargetARB.ElementArrayBuffer);
-            vertexBuffer = new BufferObject<float>(gl_api, vertices, BufferTargetARB.ArrayBuffer);
-            arrayObject = new VertexArrayObject<float, uint>(gl_api, vertexBuffer, indicesBuffer);
-            
+            indicesLength = (uint) indices.Length;
+            arrayObject = new VertexArray<float, uint>(gl_api, vertices, BufferTargetARB.ArrayBuffer, indices,
+                BufferTargetARB.ElementArrayBuffer);
+
             arrayObject.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 8, 0);
             arrayObject.VertexAttributePointer(1, 3, VertexAttribPointerType.Float, 8, 3);
             arrayObject.VertexAttributePointer(2, 2, VertexAttribPointerType.Float, 8, 6);
         }
 
-        public override unsafe void Render(double deltaTime, Camera c)
+        public override unsafe void Render(double deltaTime)
         {
-            indicesBuffer.Bind();
-            vertexBuffer.Bind();
             arrayObject.Bind();
             associatedShader.Use();
+            transformationMatrix = Transformation.ViewMatrix;
+            ApplyShaderUniforms();
             
-            ApplyShaderUniforms(c);
-            
-            gl_api.DrawElements(PrimitiveType.Triangles,indicesBuffer.GetSize(),DrawElementsType.UnsignedInt,null);
+            gl_api.DrawElements(PrimitiveType.Triangles,indicesLength,DrawElementsType.UnsignedInt,null);
+        }
+        
+        public override unsafe void Render(double deltaTime, Transform parentTransformation)
+        {
+            arrayObject.Bind();
+            associatedShader.Use();
+            transformationMatrix = Transformation.ViewMatrix * parentTransformation.ViewMatrix;
+            ApplyShaderUniforms();
+
+            gl_api.DrawElements(PrimitiveType.Triangles,indicesLength,DrawElementsType.UnsignedInt,null);
         }
 
-        protected virtual void ApplyShaderUniforms(Camera c)
+        protected virtual void ApplyShaderUniforms()
         {
-            var currentTransform = new Transform
-            {
-                Position = Position, Rotation = Rotation, Scale = Scaling
-            };
-            
-            associatedShader.TrySetUniform("uModel", currentTransform.ViewMatrix);
-            associatedShader.TrySetUniform("uView", c.GetViewMatrix());
-            associatedShader.TrySetUniform("uProjection", c.GetProjectionMatrix());
+            associatedShader.TrySetUniform("uWorld", transformationMatrix);
+            associatedShader.TrySetUniform("uView", CameraRelevant.GetViewMatrix());
+            associatedShader.TrySetUniform("uProjection", CameraRelevant.GetProjectionMatrix());
         }
         
         private (float[], uint[]) CreateVertexInfo()

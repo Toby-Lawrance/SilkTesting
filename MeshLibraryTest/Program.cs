@@ -65,12 +65,18 @@ namespace MeshLibraryTest
             cam = new Camera(Vector3.UnitZ * 6, Vector3.UnitZ * -1, Vector3.UnitY, (float)width / height);
             myObjects = new List<GraphicsObject>();
             
-            myObjects.Add(new myCube(gl_api));
-            
+            myObjects.Add(new myBallStickCube(gl_api,cam));
+            myObjects.Add(new mySphere(gl_api,cam));
+            myObjects[1].Position = Vector3.One * 10;
+            myObjects[1].Scaling = Vector3.One * 2;
+            myObjects[1].Rotation = Quaternion.CreateFromYawPitchRoll(MathHelper.DegreesToRadians(30),MathHelper.DegreesToRadians(30),MathHelper.DegreesToRadians(30));
             foreach (var graphicsObject in myObjects)
             {
                 graphicsObject.OnLoad();
             }
+            
+            Console.WriteLine($"Zero translation {Matrix4x4.CreateTranslation(Vector3.Zero)}");
+            Console.WriteLine($"(1,1,1) translation {Matrix4x4.CreateTranslation(Vector3.One)}");
         }
 
         private static void OnUpdate(double deltaTime)
@@ -120,7 +126,7 @@ namespace MeshLibraryTest
             
             foreach (var graphicsObject in myObjects)
             {
-                graphicsObject.Render(deltaTime,cam);
+                graphicsObject.Render(deltaTime);
             }
         }
 
