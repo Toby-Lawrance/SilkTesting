@@ -70,6 +70,9 @@ namespace MeshLibraryTest
             myObjects[1].Position = Vector3.One * 10;
             myObjects[1].Scaling = Vector3.One * 2;
             myObjects[1].Rotation = Quaternion.CreateFromYawPitchRoll(MathHelper.DegreesToRadians(30),MathHelper.DegreesToRadians(30),MathHelper.DegreesToRadians(30));
+            myObjects.Add(new myCylinder(gl_api, cam));
+            myObjects[2].Scaling = new Vector3(0.1f,100,0.1f);
+            
             foreach (var graphicsObject in myObjects)
             {
                 graphicsObject.OnLoad();

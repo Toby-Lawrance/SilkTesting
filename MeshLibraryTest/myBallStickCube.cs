@@ -35,9 +35,10 @@ namespace MeshLibraryTest
         {
             time += deltaTime;
             base.Update(deltaTime);
-            var speed = 15f * (float)deltaTime;
-            
-            Rotation = Quaternion.CreateFromYawPitchRoll(0.0f,MathHelper.DegreesToRadians(45),MathHelper.DegreesToRadians((float)time * speed));
+            var speed = 20f;
+            float rotationRate = MathHelper.DegreesToRadians(speed * (float)deltaTime);
+            Rotation *= Quaternion.CreateFromAxisAngle(Vector3.UnitY, rotationRate);
+
         }
     }
 }
