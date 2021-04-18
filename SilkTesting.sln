@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMeshGraphics", "Simpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeshLibraryTest", "MeshLibraryTest\MeshLibraryTest.csproj", "{B70E042A-5373-437F-9119-90CF20B894BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InverseKinematics", "InverseKinematics\InverseKinematics.csproj", "{BED96EA2-1D74-4F89-A927-BFF949734451}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{B70E042A-5373-437F-9119-90CF20B894BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B70E042A-5373-437F-9119-90CF20B894BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B70E042A-5373-437F-9119-90CF20B894BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED96EA2-1D74-4F89-A927-BFF949734451}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED96EA2-1D74-4F89-A927-BFF949734451}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED96EA2-1D74-4F89-A927-BFF949734451}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED96EA2-1D74-4F89-A927-BFF949734451}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

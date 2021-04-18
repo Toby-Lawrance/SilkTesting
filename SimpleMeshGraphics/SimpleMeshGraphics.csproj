@@ -21,6 +21,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Include="Cone.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Cube.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="Cylinder.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <Content Include="shaders\lighting.frag">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
@@ -39,6 +48,9 @@
       <Content Include="shaders\texture.vert">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <Content Include="Sphere.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="lighting.frag" />
       <None Remove="lightingTextureShader.frag" />
       <None Remove="passThroughShader.frag" />
@@ -48,6 +60,10 @@
       <None Remove="textureShader.frag" />
       <None Remove="textureShader.vert" />
       <None Remove="transformShader.vert" />
+      <None Remove="FaceOriginCube.obj" />
+      <Content Include="FaceOriginCube.obj">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

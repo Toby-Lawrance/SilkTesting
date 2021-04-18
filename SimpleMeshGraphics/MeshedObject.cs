@@ -37,21 +37,12 @@ namespace SimpleMeshGraphics
             arrayObject.VertexAttributePointer(2, 2, VertexAttribPointerType.Float, 8, 6);
         }
 
-        public override unsafe void Render(double deltaTime)
+        public override unsafe void Render(double deltaTime, Stack<Transform> parentTransformations)
         {
             arrayObject.Bind();
             associatedShader.Use();
-            transformationMatrix = Transformation.ViewMatrix;
-            ApplyShaderUniforms();
-            
-            gl_api.DrawElements(PrimitiveType.Triangles,indicesLength,DrawElementsType.UnsignedInt,null);
-        }
-        
-        public override unsafe void Render(double deltaTime, Transform parentTransformation)
-        {
-            arrayObject.Bind();
-            associatedShader.Use();
-            transformationMatrix = Transformation.ViewMatrix * parentTransformation.ViewMatrix;
+            parentTransformations.Push(Transformation);
+            transformationMatrix =  parentTransformations.Select(t => t.ViewMatrix).Aggregate(Matrix4x4.Identity, (m1,m2) => m1*m2);
             ApplyShaderUniforms();
 
             gl_api.DrawElements(PrimitiveType.Triangles,indicesLength,DrawElementsType.UnsignedInt,null);

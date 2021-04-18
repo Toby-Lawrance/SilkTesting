@@ -44,20 +44,13 @@ namespace SimpleMeshGraphics
                 component.Update(deltaTime);
             }
         }
-
-        public override void Render(double deltaTime)
-        {
-            foreach (var (key,component) in components)
-            {
-                component.Render(deltaTime,Transformation);
-            }
-        }
         
-        public override void Render(double deltaTime, Transform parentTransformation)
+        public override void Render(double deltaTime, Stack<Transform> parentTransformation)
         {
+            parentTransformation.Push(Transformation);
             foreach (var (key,component) in components)
             {
-                component.Render(deltaTime,Transformation);
+                component.Render(deltaTime,parentTransformation);
             }
         }
     }
